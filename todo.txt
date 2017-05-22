@@ -1,0 +1,20 @@
+funzione isSaved prima del copyto e in save e selectbyte
+segno di spunta per salvataggio
+copyto anche con tab (focus) e input numerico
+
+dare una pulita al tutto
+
+ci vogliono dei bookmark colori
+e una legenda o infografica overlay o tooltip!
+
+copia continua e selezione multipla
+
+inserisci id=N in json
+togli il salvataggio di predefiniti
+inserire un salva globale
+apply_style contiene due funzioni, usate anche da altri
+
+carica file da js
+carica più file da js
+
+elenca valori di variabile attraverso i file

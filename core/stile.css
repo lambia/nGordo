@@ -1,0 +1,32 @@
+body {
+    background-color: #222;
+    color: #FFF;
+    font-family: 'Open Sans', sans-serif; /* or Roboto or Montserrat */
+}
+
+.singleByte {
+    width: 1.4em !important;
+    text-align: center;
+    height: 1.4em !important;
+    padding: 0.2em;
+    line-height: 1;
+    font-size: 1em;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    border: none;
+    border-radius: 0;
+    /*1 see if others need !important? */
+    background-color: #333;
+    color: #FFF;
+    box-sizing: border-box;
+}
+
+input:focus {
+    /*outline: 1px solid white !important;*/
+    /*2 doesn't work */
+}
+
+.selectedByte {
+    border: 1px solid white !important;
+}
