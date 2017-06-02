@@ -5,7 +5,7 @@ body {
 }
 
 .singleByte {
-    width: 1.4em !important;
+    width: 3.1% !important;
     text-align: center;
     height: 1.4em !important;
     padding: 0.2em;
@@ -29,4 +29,11 @@ input:focus {
 
 .selectedByte {
     border: 1px solid white !important;
+}
+
+#divDx {
+    text-align: center;
+}
+#divDx input {
+    text-align: center;
 }

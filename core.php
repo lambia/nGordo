@@ -10,7 +10,8 @@ $buffer = "";
 $thearray = array();
 
 function open_file() {
-    global  $directory, $test_file, $buffer, $thearray;
+    global  $directory, $test_file, $buffer;
+    //global $thearray;
     $handle = fopen($directory."/".$test_file, "r") or die("Unable to open file!");
     if ($handle) {
         while (!feof($handle)) {
@@ -58,6 +59,19 @@ function load_style($from) {
     $result = file_get_contents($from);
     if(!isset($result)) { $result = null; }
     return $result;
+}
+
+function load_hex($from) {
+    global $directory;
+    $handle = fopen($from, "r") or die("Unable to open file!");
+    $buffer = null;
+    if ($handle) {
+        while (!feof($handle)) {
+            $buffer = $buffer . bin2hex(fread($handle,4));
+        }
+        fclose($handle);
+    }
+    return $buffer;
 }
 
 ?>
