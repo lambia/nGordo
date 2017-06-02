@@ -261,6 +261,12 @@ function loadFile(value) {
     index = value;
 }
 
+function getColor(value){
+    //value from 0 to 1
+    var hue=((value)*120).toString(10); //change to 1-value or value-1 for different themes
+    return ["hsl(",hue,",100%,50%)"].join("");
+}
+
 function checkRepeat(value) {
     if(value<0) {
         result = new Array();
@@ -274,7 +280,8 @@ function checkRepeat(value) {
                 }
             }
             result[cc]=Math.round(rec/returned*100*10)/10;
-            $("#usr"+cc).css("background-color", "rgb(0,"+Math.round(result[cc]*2.55)+",0)");
+            //$("#usr"+cc).css("background-color", "rgb(0,"+Math.round(result[cc]*2.55)+",0)");
+            $("#usr"+cc).css("background-color", getColor(Math.round(result[cc])/100 ) );
             
         }
     } else {

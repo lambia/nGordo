@@ -87,7 +87,7 @@ open_file();
             <br/>
         </row>
         <row class="col-xs-12">
-            <input id="halfStat" name="halfStat" type="text" disabled class="form-control" />
+            <input id="halfStat" name="halfStat" type="text" class="form-control" />
         </row>
     </div>
     </div>
