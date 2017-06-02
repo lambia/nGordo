@@ -28,7 +28,7 @@ open_file();
                 for ($c = 0; $c < 64; $c++) {
                     echo '<div class="row" id="row_'.$c.'">';
                     for ($cc = 0; $cc < 32; $cc++) {
-                        echo '<input type="text" class="form-control singleByte" id="usr'.(($c*32)+$cc).'" maxlength="2" size="2" />'; //value="'.$buffer[(($c*32)+$cc)].'">';
+                        echo '<input type="text" class="form-control halfByte" id="usr'.(($c*32)+$cc).'" maxlength="2" size="2" />'; //value="'.$buffer[(($c*32)+$cc)].'">';
                     }
                     echo '</div>';
                 }
@@ -39,14 +39,16 @@ open_file();
        <div class="affix">
         <row class="col-xs-12">
             <br/>
+            <input type="text" id="filename" name="filename" value="filename.ext" class="form-control" disabled />
+            <br/>
             <button id="btnFileBack" type="button" class="btn btn-primary">&lt;&lt;</button>
-            &nbsp;<span id="fileIndex">x</span>/<?php echo count(glob('files/*.mfd')); ?>&nbsp;
+            &nbsp;<span id="fileIndex">X</span>/<?php echo count(glob('files/*.mfd'))-1; ?>&nbsp;
             <button id="btnFileNext" type="button" class="btn btn-primary">&gt;&gt;</button>
         </row>
         <row class="col-xs-4">
             <br/>
             <label for="inputByte">Selected byte:</label>
-            <input id="inputByte" type="number" value="" class="form-control" />
+            <input id="inputByte" type="number" value="0" class="form-control" min="0" max="1024" />
             <!-- convert to hex -->
         </row>
         <row class="col-xs-4">
@@ -74,9 +76,18 @@ open_file();
             <button id="btnSaveStyle" type="button" class="btn btn-primary">Save</button> <!-- btn-success -->
             <br/>
             <input type="checkbox" name="autosave" id="autosave" checked />&nbsp;Auto-save on cell-change
+            <br/>
+            <br/>
         </row>
         <row class="col-xs-6">
             <button id="btnCopyStyle" type="button" class="btn btn-primary">Copy to...</button> <!-- btn-success -->
+            <br/>
+            <input type="checkbox" name="autocopy" id="autocopy" checked />&nbsp;Continuously copy
+            <br/>
+            <br/>
+        </row>
+        <row class="col-xs-12">
+            <input id="halfStat" name="halfStat" type="text" disabled class="form-control" />
         </row>
     </div>
     </div>

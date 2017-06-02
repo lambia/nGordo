@@ -4,7 +4,7 @@ body {
     font-family: 'Open Sans', sans-serif; /* or Roboto or Montserrat */
 }
 
-.singleByte {
+.halfByte {
     width: 3.1% !important;
     text-align: center;
     height: 1.4em !important;

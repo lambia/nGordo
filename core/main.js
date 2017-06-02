@@ -19,7 +19,7 @@ function GUInit() {
     });
     
     //When focusing a cell, update the number
-    $(".singleByte").click(function() {
+    $(".halfByte").click(function() {
         selectByte( $(this).attr('id').replace(/[^0-9]/g, '') );
     });
     
@@ -38,6 +38,11 @@ function GUInit() {
         navigation(index-1);
     });
     
+    //Check repeat(s)
+    $("#halfStat").click(function() {
+        checkRepeat(-1);
+    });
+    
     loadAjaxFiles();
     new_style();
     loadAjax("template.json","json");
@@ -46,7 +51,7 @@ function GUInit() {
 }
 
 function selectByte(number) {
-    console.log(number);
+    //console.log(number);
     fore = $("#inputFore").val();
     back = $("#inputBack").val();
     note = $("#comment").val();
@@ -69,8 +74,11 @@ function selectByte(number) {
     $("#inputByte").val(currentByte);
     
     //Highlight a byte
-    $(".singleByte").removeClass("selectedByte");
+    $(".halfByte").removeClass("selectedByte");
     $("#usr" + currentByte).addClass("selectedByte");
+    
+    //Show stats
+    checkRepeat(number);
     
     //Load colors and note
     if(theArray[currentByte]['fore'].length<4) { theArray[currentByte]['fore']=foreColor; }
@@ -96,19 +104,23 @@ function copy_style(fore, back, note) {
     $("#btnCopyStyle").unbind( "click.copy" );
     $("#btnCopyStyle").bind( "click.uncopy", function(){ uncopy_style(); } );
     
-    $(".singleByte").bind( "click.copy", function(){
+    $(".halfByte").bind( "click.copy", function(){
         $(this).css({color: fore, backgroundColor: back});
         $("#inputFore").val(fore);
         $("#inputBack").val(back);
         $("#comment").val(note);
-        //$(".singleByte").unbind( "click.copy" );
+        if(!$("#autocopy").prop("checked")) {
+            uncopy_style();
+        }
     } );
     $("#inputByte").bind( "input.copy", function() { //instead of change cause it need losing focus first
         $("#usr"+$(this).val()).css({color: fore, backgroundColor: back});
         $("#inputFore").val(fore);
         $("#inputBack").val(back);
         $("#comment").val(note);
-        //$(".inputByte").unbind( "change.copy" );
+        if(!$("#autocopy").prop("checked")) {
+            uncopy_style();
+        }
     });
 }
 
@@ -119,7 +131,7 @@ function uncopy_style() {
         copy_style($("#inputFore").val(), $("#inputBack").val(), $("#comment").val());
     });
     
-    $(".singleByte").unbind( "click.copy" );
+    $(".halfByte").unbind( "click.copy" );
     $("#inputByte").unbind( "input.copy" );
 }
 
@@ -178,7 +190,8 @@ function loadAjax(what, how) {
                 returned_data[returned] = data;
                 returned++;
                 if(files.length == returned) {
-                   navigation(0);
+                    navigation(0);
+                    selectByte(0);
                }
             }
         }
@@ -221,6 +234,7 @@ function colorSliderInit(e) {
 function navigation(value) {
     if(value>=0) {
         $("#fileIndex").text(value);
+        $("#filename").val( files[value] );
         loadFile(value);
     } else if(value<0) {
         $("#btnFileBack").prop('disabled', true);
@@ -230,19 +244,49 @@ function navigation(value) {
 
 function loadFile(value) {
     for (var x = 0; x < returned_data[value].length; x++) {
-        $("#usr"+x).val( returned_data[value][x]+returned_data[value][x+1] );
+        $("#usr"+x).val( returned_data[value][x] );
     }
     
-    if(value>0){
+    if(value>1){
         $("#btnFileBack").prop('disabled', false);
     } else {
         $("#btnFileBack").prop('disabled', true);
     }
-    if(value<returned) {
+    if(value<returned-1) {
         $("#btnFileNext").prop('disabled', false);
     } else {
         $("#btnFileNext").prop('disabled', true);
     }
     
     index = value;
+}
+
+function checkRepeat(value) {
+    if(value<0) {
+        result = new Array();
+        //Loop all values (of this file)
+        for (var cc=0; cc<2048; cc++) {  
+            rec = 0;
+            //Loop specified value in all files
+            for (var c=0; c<returned; c++) {
+                if(returned_data[c][cc]==returned_data[index][cc]) {
+                    rec++;
+                }
+            }
+            result[cc]=Math.round(rec/returned*100*10)/10;
+            $("#usr"+cc).css("background-color", "rgb(0,"+Math.round(result[cc]*2.55)+",0)");
+            
+        }
+    } else {
+        rec = 0;
+        //Loop specified value in this files
+        for (var c=0; c<returned; c++) {
+            if(returned_data[c][value]==returned_data[index][value]) {
+                rec++;
+            }
+        }
+        result = Math.round(rec/returned*100*10)/10;
+        $("#halfStat").val(result+"% meaning "+rec+" out of "+returned);
+    }
+    return result;
 }
