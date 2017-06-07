@@ -1,10 +1,27 @@
-currentByte = "-1";
-conta = 0;
+/* todo 
+frontend:
+aggiungi framework ui
+seleziona righe e colonne
+seleziona celle multiple
+sistema incollonamento bootstrap
+
+ui:
+heatmap fadein
+list of exceptions in green frequency
+list of exceptions in red frequency
+change file click on name
+
+check a volte salva il copyTo e a volte salta il file
+rendere il salva complessivo
+hide blocks
+*/
+
+currentByte = "-1"; //the selected half-byte
 foreColor = "#ffffff";
 backColor = "#333333";
-returned = 0;
-returned_data = new Array ();
-index = -1;
+returned = 0; //number of files returned from ajax
+returned_data = new Array (); //file contents actually returned from ajax
+index = -1; //current file
 
 $(function() {
     GUInit();
@@ -39,8 +56,10 @@ function GUInit() {
     });
     
     //Check repeat(s)
-    $("#halfStat").click(function() {
-        checkRepeat(-1);
+    //ToDo: bind hover "click to display heatmap"
+    //Other bind hover "green is always, red is never"
+    $("#halfStat").bind( "click.hot", function() {
+        do_heatmap();
     });
     
     loadAjaxFiles();
@@ -48,6 +67,7 @@ function GUInit() {
     loadAjax("template.json","json");
     colorSliderInit();
     navigation(-1);
+    
 }
 
 function selectByte(number) {
@@ -79,6 +99,8 @@ function selectByte(number) {
     
     //Show stats
     checkRepeat(number);
+    if(number%2==0) { $("#offsetPossibilities").val(1); } else { $("#offsetPossibilities").val(-1); }
+    show_possibilites(number);
     
     //Load colors and note
     if(theArray[currentByte]['fore'].length<4) { theArray[currentByte]['fore']=foreColor; }
@@ -189,10 +211,12 @@ function loadAjax(what, how) {
                 //console.log(returned);
                 returned_data[returned] = data;
                 returned++;
-                if(files.length == returned) {
+                
+                //if(files.length == returned) {
+                if(returned>0) {
                     navigation(0);
                     selectByte(0);
-               }
+                }
             }
         }
     });
@@ -243,11 +267,15 @@ function navigation(value) {
 }
 
 function loadFile(value) {
-    for (var x = 0; x < returned_data[value].length; x++) {
-        $("#usr"+x).val( returned_data[value][x] );
+    for (var x = 0; x < 2048; x++) {
+        if ( returned_data[value][x]==undefined || returned_data[value][x]==null ) {
+            $("#usr"+x).val( "" );
+        } else {
+            $("#usr"+x).val( returned_data[value][x] );
+        }
     }
     
-    if(value>1){
+    if(value>=1){
         $("#btnFileBack").prop('disabled', false);
     } else {
         $("#btnFileBack").prop('disabled', true);
@@ -270,7 +298,7 @@ function getColor(value){
 function checkRepeat(value) {
     if(value<0) {
         result = new Array();
-        //Loop all values (of this file)
+        //Loop all values (of this file)(heatmap)
         for (var cc=0; cc<2048; cc++) {  
             rec = 0;
             //Loop specified value in all files
@@ -293,7 +321,57 @@ function checkRepeat(value) {
             }
         }
         result = Math.round(rec/returned*100*10)/10;
-        $("#halfStat").val(result+"% meaning "+rec+" out of "+returned);
+        $("#halfStat").val("Frequency is "+result+"% meaning "+rec+" out of "+returned);
     }
     return result;
+}
+
+//Bind/unbind the right handler for the heatmap button
+function do_heatmap() {
+    checkRepeat(-1);
+    $("#halfStat").val("Click again to toggle heatmap");
+    $("#halfStat").unbind( "click.hot" ).bind( "click.ice", function() {
+        undo_heatmap();
+    });
+} function undo_heatmap() {
+    new_style();
+    selectByte(currentByte);
+    loadAjax("template.json","json");
+    $("#halfStat").unbind( "click.ice" ).bind( "click.hot", function() {
+        do_heatmap();
+    });
+}
+
+//possibilities
+function list_possibilities(n,offset) {
+    $(".possibilities").remove();
+    
+    possibilities = new Array();
+    cc=0;
+    
+    for (c=0; c<returned; c++) {
+        //if( returned_data[c][n] != theArray[n] ){ (check also the offset)
+            if(offset==1) {
+                possibilities[cc] = returned_data[c][n] + returned_data[c][n+1];
+                cc++;
+            } else if(offset==-1) {
+                possibilities[cc] = returned_data[c][n-1] + returned_data[c][n];
+                cc++;
+            } else {
+                possibilities[cc] = returned_data[c][n];
+                cc++;
+            }
+        //}
+    }
+    //delete duplicates
+    for (c=0; c<possibilities.length; c++) {
+        $("#possibilities").append("<option class='possibilities'>"+possibilities[c]+" into -> "+c+"</option>");
+    }
+    
+    //return result;
+}
+
+function show_possibilites() {
+    list_possibilities(parseInt(currentByte), parseInt( $("#offsetPossibilities").val() ) );
+
 }

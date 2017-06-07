@@ -18,3 +18,23 @@ carica file da js
 carica più file da js
 
 elenca valori di variabile attraverso i file
+
+doppio salvataggio per undo, e/o array di operazioni
+copyTo non è istantaneo
+
+navigazione tra byte con frecce
+accoppiare i mezzi byte
+
+hover bottoni e check, label cliccabile
+funzione ricostruisci template (% > x)
+selezionare file dal nome
+funzione "escludi file" e gruppi di file
+
+fixed bug when file is empty doesn't refresh cells
+
+CHECK POSSIBILITIES!!
+
+il bug del template avviene attivando e disattivando heatmap, anche senza cambio byte (new_style, ma quando save?)
+checkpossibilities non permette di cambiare offset
+cambio file tramite select
+sync tra nomefile e index-numerico

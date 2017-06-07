@@ -1,6 +1,5 @@
 <?php
 require('core.php');
-open_file();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,17 +37,23 @@ open_file();
     <div id="divDx" class="col-xs-4">
        <div class="affix">
         <row class="col-xs-12">
+        <row class="col-xs-6">
             <br/>
             <input type="text" id="filename" name="filename" value="filename.ext" class="form-control" disabled />
+            <!-- <select id="filename" name="filename" value="filename.ext" class="form-control"></select> -->
+        </row>
+        <row class="col-xs-6">
             <br/>
             <button id="btnFileBack" type="button" class="btn btn-primary">&lt;&lt;</button>
             &nbsp;<span id="fileIndex">X</span>/<?php echo count(glob('files/*.mfd'))-1; ?>&nbsp;
             <button id="btnFileNext" type="button" class="btn btn-primary">&gt;&gt;</button>
         </row>
+       </row>
+        <row class="col-xs-12">
         <row class="col-xs-4">
             <br/>
-            <label for="inputByte">Selected byte:</label>
-            <input id="inputByte" type="number" value="0" class="form-control" min="0" max="1024" />
+            <label for="inputByte">Half-byte:</label>
+            <input id="inputByte" type="number" value="0" class="form-control" min="0" max="2047" />
             <!-- convert to hex -->
         </row>
         <row class="col-xs-4">
@@ -65,11 +70,12 @@ open_file();
             <input id="inputBack" type="text" value="#333333" class="form-control" />
         </div>
         </row>
+       </row>
         <row class="col-xs-12">
             <br/>
         <div class="form-group">
           <label for="comment">Note:</label>
-          <textarea class="form-control" rows="5" id="comment"></textarea>
+          <textarea class="form-control" rows="3" id="comment"></textarea>
         </div>
         </row>
         <row class="col-xs-6">
@@ -88,6 +94,15 @@ open_file();
         </row>
         <row class="col-xs-12">
             <input id="halfStat" name="halfStat" type="text" class="form-control" />
+           <br/>
+        </row>
+        <row class="col-xs-12">
+            <row class="col-xs-4">
+                <input type="number" name="offsetPossibilities" id="offsetPossibilities" class="form-control" value="0" />
+            </row>
+            <row class="col-xs-8">
+                <select id="possibilities" name="possibilities" class="form-control"><option value="-1">Other possible values</option></select>
+            </row>
         </row>
     </div>
     </div>

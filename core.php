@@ -1,5 +1,5 @@
 <?php
-ini_set('memory_limit', '4M');
+ini_set('memory_limit', '32M');
 
 $name = "nGordo";
 $version = "0.0.1";
@@ -9,6 +9,8 @@ $test_file = "jack.mfd";
 $buffer = "";
 $thearray = array();
 
+
+/*
 function open_file() {
     global  $directory, $test_file, $buffer;
     //global $thearray;
@@ -19,14 +21,15 @@ function open_file() {
         }
         fclose($handle);
     }
-        /*
-        $hex = unpack("H*", file_get_contents($filename));
-        $hex = current($hex);
-        and to convert a hexdump back to source:
-
-        $chars = pack("H*", $hex);
-        */
 }
+*//*
+$hex = unpack("H*", file_get_contents($filename));
+$hex = current($hex);
+and to convert a hexdump back to source:
+
+$chars = pack("H*", $hex);
+*/
+
 
 //Init style array: create array with 1024 elements, each one with 3 values: fore, back and note
 /*
